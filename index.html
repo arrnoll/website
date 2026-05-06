@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nevlaalven</title>
+
+  <!-- ══════════════════════════════════════════════════
+       FAVICON / ICON next to the browser tab title
+       replace with your own icon file:
+       <link rel="icon" type="image/png" href="images/icon.png" />
+       or use an svg:
+       <link rel="icon" type="image/svg+xml" href="images/icon.svg" />
+       ══════════════════════════════════════════════════ -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c1440e'/><text x='16' y='22' font-family='monospace' font-size='14' font-weight='bold' fill='%23f0ece3' text-anchor='middle'>n</text></svg>" />
+
+  <!-- ══════════════════════════════════════════════════
+       FONT — DM Mono
+       rounded humanist mono — same terminal feel,
+       softer and more approachable than Inconsolata.
+       ══════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+
+    /* ══════════════════════════════════════════════════
+       palette — 5 values to retheme the whole site
+       ══════════════════════════════════════════════════ */
+    :root {
+      --bg:      #0d0c0a;
+      --layer:   #111009;
+      --text:    #ddd8ce;
+      --dim:     #52504a;
+      --accent:  #c1440e;
+      --font:    'DM Mono', monospace;
+    }
+
+    /* ── reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; }
+    body  {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-weight: 300;
+      font-size: 13px;
+      line-height: 1.75;
+    }
+    a   { color: inherit; text-decoration: none; }
+    img { display: block; }
+
+
+    /* ══════════════════════════════════════════════════
+       NAV — transparent, floats over the header image
+       ══════════════════════════════════════════════════ */
+    nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      /* subtle gradient so text reads over bright images */
+      background: linear-gradient(to bottom,
+        rgba(13,12,10,0.7) 0%,
+        rgba(13,12,10,0)   100%);
+    }
+
+    /* ══════════════════════════════════════════════════
+       LOGO
+       one color, lowercase
+       ══════════════════════════════════════════════════ */
+    .logo {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: rgba(221,216,206,0.65);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* hire me — edit href to your email -->*/
+    .nav-hire {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+    .nav-hire:hover { opacity: 1; }
+
+
+    /* ══════════════════════════════════════════════════
+       HEADER IMAGE — full width, tall, edge to edge
+       ══════════════════════════════════════════════════ */
+    .site-header {
+      position: relative;
+      width: 100%;
+      height: 72vh;
+      min-height: 420px;
+      overflow: hidden;
+      background: var(--layer);
+    }
+
+    /* ══════════════════════════════════════════════════
+       HEADER IMAGE
+       replace the placeholder div below with:
+       <img src="images/header.jpg"
+            alt="nevlaalven"
+            class="header-img" />
+       recommended: wide image, 1600px+ wide.
+       tip: use a dramatic landscape or key artwork.
+       ══════════════════════════════════════════════════ */
+    .header-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.85;
+    }
+
+    .header-ph {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: var(--dim);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    .header-ph svg { opacity: 0.12; margin-bottom: 8px; }
+
+    /* text overlay on header image */
+    .header-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 60px 40px 36px;
+      background: linear-gradient(to top,
+        rgba(13,12,10,0.88) 0%,
+        rgba(13,12,10,0)    100%);
+    }
+
+    /* ══════════════════════════════════════════════════
+       HEADER TITLE — hand-drawn png slot
+       replace the <p class="header-title-text"> with:
+       <img src="images/title-main.png"
+            alt="nevlaalven"
+            class="header-title-img" />
+       png, transparent background, max-height 90px.
+       ══════════════════════════════════════════════════ -->
+    .header-title-img  { max-height: 90px; width: auto; object-fit: contain; }
+    .header-title-text {
+      font-size: 42px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .header-sub {
+      margin-top: 10px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: rgba(221,216,206,0.55);
+      font-style: italic;
+    }
+
+
+    /* ══════════════════════════════════════════════════
+       PAGE BODY — content below the header
+       ══════════════════════════════════════════════════ -->
+    .page {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 72px 40px 0;
+    }
+
+
+    /* ── section shared ── */
+    .section { margin-bottom: 80px; }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(221,216,206,0.06);
+    }
+
+    /* ══════════════════════════════════════════════════
+       SECTION HEADING — hand-drawn png slot
+       for each section, replace
+       <span class="sh-text">heading</span>
+       with:
+       <img src="images/heading-NAME.png"
+            alt="heading"
+            class="sh-img" />
+       png, transparent bg, max-height 44px.
+       ══════════════════════════════════════════════════ -->
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+      margin-bottom: 28px;
+    }
+
+    .sh-img  { max-height: 44px; width: auto; object-fit: contain; }
+    .sh-text {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+
+
+    /* ══════════════════════════════════════════════════
+       SLIDESHOW — image sequence window
+       javascript below handles prev/next and autoplay.
+       each slide can link to a different url.
+       ══════════════════════════════════════════════════ */
+    .slideshow-wrap {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--layer);
+      user-select: none;
+    }
+
+    .slideshow-track {
+      display: flex;
+      transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide {
+      flex: 0 0 100%;
+      position: relative;
+      display: block;          /* each slide is an <a> tag */
+      cursor: pointer;
+    }
+
+    .slide img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* placeholder for slides without images */
+    .slide-ph {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--layer);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--dim);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .slide-ph svg { opacity: 0.1; }
+
+    /* caption bar at bottom of slide */
+    .slide-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 22px 16px;
+      background: linear-gradient(to top,
+        rgba(13,12,10,0.8) 0%,
+        rgba(13,12,10,0)   100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .slide-name {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color: var(--text);
+    }
+
+    .slide-link {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--accent);
+    }
+
+    /* prev / next arrows */
+    .slide-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      background: rgba(13,12,10,0.55);
+      border: none;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .slide-btn:hover { background: rgba(193,68,14,0.5); }
+    .slide-btn.prev  { left: 14px; }
+    .slide-btn.next  { right: 14px; }
+
+    /* dot indicators */
+    .slide-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--dim);
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .dot.active { background: var(--accent); transform: scale(1.3); }
+
+
+    /* ══════════════════════════════════════════════════
+       WORK GRID — portfolio images
+       ══════════════════════════════════════════════════ */
+    .grid {
+      display: grid;
+      gap: 3px;
+    }
+
+    .g4 { grid-template-columns: repeat(4, 1fr); }
+    .g3 { grid-template-columns: repeat(3, 1fr); }
+
+    .img-card {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--layer);
+      cursor: pointer;
+    }
+
+    .img-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease, opacity 0.3s;
+    }
+
+    /* hover: slight scale + dim + accent top strip */
+    .img-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(13,12,10,0.5);
+      opacity: 0;
+      transition: opacity 0.25s;
+      z-index: 1;
+      border-radius: 6px;
+    }
+
+    .img-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s ease;
+      z-index: 2;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .img-card:hover::before { opacity: 1; }
+    .img-card:hover::after  { transform: scaleX(1); }
+    .img-card:hover img     { transform: scale(1.03); }
+
+    /* label on hover */
+    .img-label {
+      position: absolute;
+      bottom: 13px; left: 14px; right: 14px;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.25s, transform 0.25s;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+
+    .img-label span { color: var(--accent); }
+    .img-card:hover .img-label { opacity: 1; transform: translateY(0); }
+
+    /* card placeholder */
+    .card-ph {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--dim);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-align: center;
+      padding: 20px;
+    }
+    .card-ph svg { opacity: 0.1; }
+
+    /* aspect ratios */
+    .r-sq   { aspect-ratio: 1/1; }
+    .r-43   { aspect-ratio: 4/3; }
+    .r-34   { aspect-ratio: 3/4; }
+    .r-wide { aspect-ratio: 16/9; }
+
+
+    /* ══════════════════════════════════════════════════
+       YOUTUBE SECTION
+       paste your YouTube embed URLs below.
+       each video is a responsive 16:9 iframe.
+       ══════════════════════════════════════════════════ */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .video-wrap {
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--layer);
+      position: relative;
+    }
+
+    /* responsive 16:9 container */
+    .video-ratio {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+    }
+
+    .video-ratio iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    .video-caption {
+      padding: 12px 16px 14px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--dim);
+    }
+
+
+    /* ══════════════════════════════════════════════════
+       SERVICES — minimal text list
+       ══════════════════════════════════════════════════ */
+    .service-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+    }
+
+    .svc {
+      background: var(--layer);
+      border-radius: 8px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .svc:hover { background: #161410; }
+
+    .svc-num  {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--accent);
+    }
+
+    .svc-name {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      color: var(--text);
+    }
+
+    /* ══════════════════════════════════════════════════
+       SERVICE SAMPLE IMAGE
+       replace the placeholder with:
+       <img src="images/sample-NAME.jpg"
+            alt="…"
+            class="svc-img" />
+       gif works for animation.
+       ══════════════════════════════════════════════════ -->
+    .svc-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 5px;
+      margin: 4px 0;
+    }
+
+    .svc-desc  { font-size: 12px; color: var(--dim); line-height: 1.8; flex: 1; }
+    .svc-price { font-size: 11px; letter-spacing: 1px; color: var(--dim); font-style: italic; }
+
+    .svc-link {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      width: fit-content;
+      padding-bottom: 1px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .svc-link:hover { border-color: var(--accent); }
+
+
+    /* ══════════════════════════════════════════════════
+       CONTACT FOOTER
+       full-width dark strip at the bottom of the page
+       ══════════════════════════════════════════════════ */
+    .contact-footer {
+      background: var(--layer);
+      margin-top: 100px;
+      padding: 64px 40px 40px;
+    }
+
+    .contact-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .contact-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 48px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid rgba(221,216,206,0.06);
+    }
+
+    /* collab open indicator */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #4ae88a;
+      margin-bottom: 18px;
+    }
+
+    .blink {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ae88a;
+      animation: blink 2.5s infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.2; }
+    }
+
+    .contact-heading {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .contact-heading span { color: var(--accent); }
+
+    .contact-desc {
+      font-size: 12px;
+      color: var(--dim);
+      line-height: 1.9;
+      max-width: 340px;
+      margin-bottom: 22px;
+    }
+
+    /* interest tags */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .pill {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      padding: 3px 10px;
+      background: rgba(221,216,206,0.05);
+      border-radius: 40px;
+      color: var(--dim);
+    }
+
+    /* contact links */
+    .contact-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .contact-links li + li {
+      border-top: 1px solid rgba(221,216,206,0.05);
+    }
+
+    .contact-links a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--dim);
+      transition: color 0.2s;
+    }
+
+    .contact-links a:hover { color: var(--text); }
+
+    .contact-links a em {
+      font-style: normal;
+      color: var(--accent);
+      font-size: 13px;
+      min-width: 20px;
+    }
+
+    /* footer bottom bar */
+    .contact-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--accent);
+    }
+
+    .footer-copy {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--dim);
+    }
+
+    .footer-nav {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-nav a {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      transition: color 0.2s;
+    }
+
+    .footer-nav a:hover { color: var(--accent); }
+
+
+    /* ── responsive ── */
+    @media (max-width: 820px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page { padding: 52px 20px 0; }
+      .g4, .g3 { grid-template-columns: 1fr 1fr; }
+      .service-row { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: 1fr; }
+      .contact-top { grid-template-columns: 1fr; gap: 36px; }
+      .contact-footer { padding: 48px 20px 32px; }
+      .contact-bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .header-overlay { padding: 40px 20px 28px; }
+    }
+
+  </style>
+</head>
+<body>
+
+
+<!-- ══════════════════════════════════════════════════════
+     NAV — floats over the header image
+     ══════════════════════════════════════════════════════ -->
+<nav>
+  <span class="logo">nevlaalven</span>
+
+  <ul class="nav-links">
+    <li><a href="#work">work</a></li>
+    <li><a href="#comics">comics</a></li>
+    <li><a href="#animations">animations</a></li>
+    <li><a href="#services">services</a></li>
+  </ul>
+
+  <!-- edit href to your email -->
+  <a class="nav-hire" href="mailto:hello@nevlaalven.com">hire me</a>
+</nav>
+
+
+<!-- ══════════════════════════════════════════════════════
+     HEADER IMAGE
+     full-width, full-height image behind the title.
+     ══════════════════════════════════════════════════════ -->
+<header class="site-header">
+
+  <!-- ════════════════════════════════════════════════
+       HEADER IMAGE
+       replace this placeholder with:
+       <img src="images/header.jpg"
+            alt="nevlaalven"
+            class="header-img" />
+       recommended: 1600×900px or wider.
+       ════════════════════════════════════════════════ -->
+  <div class="header-ph">
+    <svg width="64" height="40" viewBox="0 0 64 40" fill="none">
+      <rect x="1" y="1" width="62" height="38" stroke="#ddd8ce" stroke-width="1"/>
+      <circle cx="16" cy="14" r="5" stroke="#ddd8ce" stroke-width="1"/>
+      <path d="M1 30 L14 16 L26 24 L40 10 L63 22" stroke="#ddd8ce" stroke-width="1" fill="none"/>
+    </svg>
+    header image — 1600 × 900 px
+  </div>
+
+  <!-- title + tagline overlay -->
+  <div class="header-overlay">
+
+    <!-- ════════════════════════════════════════════════
+         MAIN TITLE — hand-drawn png slot
+         replace the <p> below with:
+         <img src="images/title-main.png"
+              alt="nevlaalven"
+              class="header-title-img" />
+         png, transparent bg, max-height 90px.
+         ════════════════════════════════════════════════ -->
+    <p class="header-title-text">nevlaalven</p>
+
+    <p class="header-sub">illustration · animation · comics · giulio pascetta</p>
+  </div>
+
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE CONTENT
+     ══════════════════════════════════════════════════════ -->
+<div class="page">
+
+
+  <!-- ════════════════════════════════════════════════════
+       SLIDESHOW — image sequence
+       each slide = one <a> tag with its own link.
+       add or remove slides by copying a .slide block.
+       ════════════════════════════════════════════════════ -->
+  <div class="section" id="work">
+    <p class="section-label">01 — work</p>
+
+    <!-- ════════════════════════════════
+         SECTION HEADING — png slot
+         replace with:
+         <img src="images/heading-work.png"
+              alt="work" class="sh-img" />
+         ════════════════════════════════ -->
+    <div class="section-head">
+      <span class="sh-text">recent work</span>
+    </div>
+
+    <div class="slideshow-wrap">
+      <div class="slideshow-track" id="track">
+
+
+        <!-- ─────────────────────────────────────────
+             SLIDE 1
+             edit: href (social/shop link), image,
+             slide-name text
+             ───────────────────────────────────────── -->
+        <a class="slide"
+           href="https://www.instagram.com/nevlaalven/"
+           target="_blank" rel="noopener">
+          <!-- replace with: <img src="images/slide-01.jpg" alt="…" /> -->
+          <div class="slide-ph">
+            <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
+              <rect x="1" y="1" width="50" height="30" stroke="#ddd8ce" stroke-width="0.8"/>
+            </svg>
+            slide-01.jpg — 1200 × 675 px
+          </div>
+          <div class="slide-caption">
+            <span class="slide-name">work title 01</span>
+            <span class="slide-link">view on instagram →</span>
+          </div>
+        </a>
+
+
+        <!-- ─────────────────────────────────────────
+             SLIDE 2
+             ───────────────────────────────────────── -->
+        <a class="slide"
+           href="https://www.instagram.com/nevlaalven/"
+           target="_blank" rel="noopener">
+          <div class="slide-ph">
+            <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
+              <rect x="1" y="1" width="50" height="30" stroke="#ddd8ce" stroke-width="0.8"/>
+            </svg>
+            slide-02.jpg
+          </div>
+          <div class="slide-caption">
+            <span class="slide-name">work title 02</span>
+            <span class="slide-link">view on instagram →</span>
+          </div>
+        </a>
+
+
+        <!-- ─────────────────────────────────────────
+             SLIDE 3
+             ───────────────────────────────────────── -->
+        <a class="slide"
+           href="https://www.instagram.com/nevlaalven/"
+           target="_blank" rel="noopener">
+          <div class="slide-ph">
+            <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
+              <rect x="1" y="1" width="50" height="30" stroke="#ddd8ce" stroke-width="0.8"/>
+            </svg>
+            slide-03.jpg
+          </div>
+          <div class="slide-caption">
+            <span class="slide-name">work title 03</span>
+            <span class="slide-link">view on instagram →</span>
+          </div>
+        </a>
+
+
+        <!-- ─────────────────────────────────────────
+             SLIDE 4
+             ───────────────────────────────────────── -->
+        <a class="slide"
+           href="https://www.instagram.com/nevlaalven/"
+           target="_blank" rel="noopener">
+          <div class="slide-ph">
+            <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
+              <rect x="1" y="1" width="50" height="30" stroke="#ddd8ce" stroke-width="0.8"/>
+            </svg>
+            slide-04.jpg
+          </div>
+          <div class="slide-caption">
+            <span class="slide-name">work title 04</span>
+            <span class="slide-link">view on instagram →</span>
+          </div>
+        </a>
+
+
+        <!-- add more slides by duplicating a .slide block -->
+
+
+      </div><!-- /track -->
+
+      <button class="slide-btn prev" id="prev" aria-label="previous">‹</button>
+      <button class="slide-btn next" id="next" aria-label="next">›</button>
+    </div>
+
+    <!-- dot indicators — auto-generated by JS -->
+    <div class="slide-dots" id="dots"></div>
+  </div><!-- /slideshow section -->
+
+
+  <!-- ════════════════════════════════════════════════════
+       COMICS GRID
+       ════════════════════════════════════════════════════ -->
+  <div class="section" id="comics">
+    <p class="section-label">02 — comics</p>
+
+    <!-- ════════════════════════════════
+         SECTION HEADING — png slot
+         replace with:
+         <img src="images/heading-comics.png"
+              alt="comics" class="sh-img" />
+         ════════════════════════════════ -->
+    <div class="section-head">
+      <span class="sh-text">comics</span>
+    </div>
+
+    <div class="grid g3">
+
+
+      <!-- ─────────────────────────────────────────
+           COMIC 1
+           edit: href, image, label
+           ───────────────────────────────────────── -->
+      <a class="img-card r-34"
+         href="https://YOUR-COMIC-LINK"
+         target="_blank" rel="noopener">
+        <!-- replace with: <img src="images/comic-01.jpg" alt="…" /> -->
+        <div class="card-ph" style="height:100%;">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="17" y="1" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="1" y="17" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="17" y="17" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+          </svg>
+          comic-01.jpg
+        </div>
+        <div class="img-label">episode 01 <span>read →</span></div>
+      </a>
+
+
+      <!-- ─────────────────────────────────────────
+           COMIC 2
+           ───────────────────────────────────────── -->
+      <a class="img-card r-34"
+         href="https://YOUR-COMIC-LINK"
+         target="_blank" rel="noopener">
+        <div class="card-ph" style="height:100%;">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="17" y="1" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="1" y="17" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="17" y="17" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+          </svg>
+          comic-02.jpg
+        </div>
+        <div class="img-label">episode 02 <span>read →</span></div>
+      </a>
+
+
+      <!-- ─────────────────────────────────────────
+           COMIC 3
+           ───────────────────────────────────────── -->
+      <a class="img-card r-34"
+         href="https://YOUR-COMIC-LINK"
+         target="_blank" rel="noopener">
+        <div class="card-ph" style="height:100%;">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="17" y="1" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="1" y="17" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="17" y="17" width="12" height="12" stroke="#ddd8ce" stroke-width="0.7"/>
+          </svg>
+          comic-03.jpg
+        </div>
+        <div class="img-label">episode 03 <span>read →</span></div>
+      </a>
+
+
+      <!-- add more by duplicating any .img-card block -->
+
+
+    </div>
+  </div><!-- /comics -->
+
+
+  <!-- ════════════════════════════════════════════════════
+       ANIMATIONS — youtube embeds
+       ════════════════════════════════════════════════════ -->
+  <div class="section" id="animations">
+    <p class="section-label">03 — animations</p>
+
+    <!-- ════════════════════════════════
+         SECTION HEADING — png slot
+         replace with:
+         <img src="images/heading-animations.png"
+              alt="animations" class="sh-img" />
+         ════════════════════════════════ -->
+    <div class="section-head">
+      <span class="sh-text">animations</span>
+    </div>
+
+    <div class="video-grid">
+
+
+      <!-- ─────────────────────────────────────────
+           VIDEO 1
+           how to get the embed url:
+           1. open your youtube video
+           2. click share → embed
+           3. copy the src url — looks like:
+              https://www.youtube.com/embed/VIDEO_ID
+           4. paste it into the src below.
+           ───────────────────────────────────────── -->
+      <div class="video-wrap">
+        <div class="video-ratio">
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_1"
+            title="animation 01"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <!-- edit this caption -->
+        <p class="video-caption">animation title 01</p>
+      </div>
+
+
+      <!-- ─────────────────────────────────────────
+           VIDEO 2
+           ───────────────────────────────────────── -->
+      <div class="video-wrap">
+        <div class="video-ratio">
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_2"
+            title="animation 02"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="video-caption">animation title 02</p>
+      </div>
+
+
+      <!-- ─────────────────────────────────────────
+           VIDEO 3
+           ───────────────────────────────────────── -->
+      <div class="video-wrap">
+        <div class="video-ratio">
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_3"
+            title="animation 03"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="video-caption">animation title 03</p>
+      </div>
+
+
+      <!-- ─────────────────────────────────────────
+           VIDEO 4
+           ───────────────────────────────────────── -->
+      <div class="video-wrap">
+        <div class="video-ratio">
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_4"
+            title="animation 04"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="video-caption">animation title 04</p>
+      </div>
+
+
+      <!-- add more videos by duplicating a .video-wrap block -->
+
+
+    </div>
+  </div><!-- /animations -->
+
+
+  <!-- ════════════════════════════════════════════════════
+       SERVICES
+       ════════════════════════════════════════════════════ -->
+  <div class="section" id="services">
+    <p class="section-label">04 — services</p>
+
+    <!-- ════════════════════════════════
+         SECTION HEADING — png slot
+         replace with:
+         <img src="images/heading-services.png"
+              alt="services" class="sh-img" />
+         ════════════════════════════════ -->
+    <div class="section-head">
+      <span class="sh-text">services</span>
+    </div>
+
+    <div class="service-row">
+
+
+      <!-- ─────────────────────────────────────────
+           SERVICE 1 — ILLUSTRATION
+           edit: image, desc, price
+           ───────────────────────────────────────── -->
+      <div class="svc">
+        <p class="svc-num">01</p>
+        <p class="svc-name">illustration</p>
+
+        <!-- ════════════════════════════════════════
+             SERVICE SAMPLE IMAGE
+             replace with:
+             <img src="images/sample-illustration.jpg"
+                  alt="illustration sample"
+                  class="svc-img" />
+             ════════════════════════════════════════ -->
+        <div class="card-ph r-43" style="background:var(--bg); border-radius:5px; aspect-ratio:4/3;">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="1" y="1" width="24" height="24" stroke="#ddd8ce" stroke-width="0.7"/>
+          </svg>
+          sample-illustration.jpg
+        </div>
+
+        <p class="svc-desc">characters, editorial, concept art, print-ready files.</p>
+        <p class="svc-price">from €150</p>
+        <a class="svc-link" href="mailto:hello@nevlaalven.com">get a quote →</a>
+      </div>
+
+
+      <!-- ─────────────────────────────────────────
+           SERVICE 2 — ANIMATION
+           tip: use an animated gif as the sample!
+           ───────────────────────────────────────── -->
+      <div class="svc">
+        <p class="svc-num">02</p>
+        <p class="svc-name">animation</p>
+
+        <!-- ════════════════════════════════════════
+             replace with:
+             <img src="images/sample-animation.gif"
+                  alt="animation sample"
+                  class="svc-img" />
+             ════════════════════════════════════════ -->
+        <div class="card-ph" style="background:var(--bg); border-radius:5px; aspect-ratio:4/3;">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <polygon points="9,5 22,13 9,21" stroke="#ddd8ce" stroke-width="0.7" fill="none"/>
+          </svg>
+          sample-animation.gif
+        </div>
+
+        <p class="svc-desc">frame-by-frame 2d, motion graphics, loops for social &amp; beyond.</p>
+        <p class="svc-price">from €400</p>
+        <a class="svc-link" href="mailto:hello@nevlaalven.com">get a quote →</a>
+      </div>
+
+
+      <!-- ─────────────────────────────────────────
+           SERVICE 3 — COMICS
+           ───────────────────────────────────────── -->
+      <div class="svc">
+        <p class="svc-num">03</p>
+        <p class="svc-name">comics</p>
+
+        <!-- ════════════════════════════════════════
+             replace with:
+             <img src="images/sample-comics.jpg"
+                  alt="comics sample"
+                  class="svc-img" />
+             ════════════════════════════════════════ -->
+        <div class="card-ph" style="background:var(--bg); border-radius:5px; aspect-ratio:4/3;">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="1" y="1" width="11" height="11" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="14" y="1" width="11" height="11" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="1" y="14" width="11" height="11" stroke="#ddd8ce" stroke-width="0.7"/>
+            <rect x="14" y="14" width="11" height="11" stroke="#ddd8ce" stroke-width="0.7"/>
+          </svg>
+          sample-comics.jpg
+        </div>
+
+        <p class="svc-desc">strips, short stories, zines, handcrafted pages with soul.</p>
+        <p class="svc-price">from €200</p>
+        <a class="svc-link" href="mailto:hello@nevlaalven.com">get a quote →</a>
+      </div>
+
+
+    </div>
+  </div><!-- /services -->
+
+
+</div><!-- /page -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     CONTACT FOOTER
+     full-width dark strip — contact lives here.
+     ══════════════════════════════════════════════════════ -->
+<footer class="contact-footer" id="contact">
+  <div class="contact-inner">
+
+    <div class="contact-top">
+
+      <!-- left: collab -->
+      <div>
+        <div class="status">
+          <span class="blink"></span>
+          open for collaborations
+        </div>
+
+        <p class="contact-heading">
+          let's build<br>something <span>together</span>
+        </p>
+
+        <!-- edit this description -->
+        <p class="contact-desc">
+          looking to team up with game devs, musicians,
+          zine makers, animators, and anyone building
+          something original. big or small — say hi.
+        </p>
+
+        <!-- edit or add tags -->
+        <div class="pill-row">
+          <span class="pill">indie games</span>
+          <span class="pill">music artists</span>
+          <span class="pill">zines</span>
+          <span class="pill">short films</span>
+          <span class="pill">animation</span>
+          <span class="pill">editorial</span>
+        </div>
+      </div>
+
+      <!-- right: links -->
+      <div>
+        <p style="font-size:10px;letter-spacing:3px;color:var(--accent);margin-bottom:20px;">say hello</p>
+
+        <ul class="contact-links">
+
+          <!-- edit href + label -->
+          <li>
+            <a href="mailto:hello@nevlaalven.com">
+              <em>✉</em> hello@nevlaalven.com
+            </a>
+          </li>
+
+          <!-- edit href to your instagram -->
+          <li>
+            <a href="https://www.instagram.com/nevlaalven/"
+               target="_blank" rel="noopener">
+              <em>◎</em> @nevlaalven on instagram
+            </a>
+          </li>
+
+          <!-- edit href to your youtube -->
+          <li>
+            <a href="https://www.youtube.com/@nevlaalven"
+               target="_blank" rel="noopener">
+              <em>▶</em> youtube / nevlaalven
+            </a>
+          </li>
+
+          <!-- edit href to your vimeo -->
+          <li>
+            <a href="https://vimeo.com/nevlaalven"
+               target="_blank" rel="noopener">
+              <em>◈</em> vimeo / nevlaalven
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+    </div><!-- /contact-top -->
+
+    <!-- bottom bar -->
+    <div class="contact-bottom">
+      <span class="footer-logo">nevlaalven</span>
+      <!-- edit year / name / city -->
+      <p class="footer-copy">© 2026 giulio pascetta · pescara, it</p>
+      <ul class="footer-nav">
+        <li><a href="#work">work</a></li>
+        <li><a href="#comics">comics</a></li>
+        <li><a href="#animations">animations</a></li>
+        <li><a href="#services">services</a></li>
+      </ul>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDESHOW JAVASCRIPT
+     handles prev/next buttons, dot indicators,
+     keyboard arrows, and auto-advance every 5 seconds.
+     you don't need to edit this.
+     ══════════════════════════════════════════════════════ -->
+<script>
+  (function () {
+    const track  = document.getElementById('track');
+    const dotsEl = document.getElementById('dots');
+    const slides = track.querySelectorAll('.slide');
+    const total  = slides.length;
+    let current  = 0;
+    let timer;
+
+    /* build dots */
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'go to slide ' + (i + 1));
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+    });
+
+    function goTo(n) {
+      current = (n + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dotsEl.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+      resetTimer();
+    }
+
+    document.getElementById('prev').addEventListener('click', e => {
+      e.preventDefault(); goTo(current - 1);
+    });
+    document.getElementById('next').addEventListener('click', e => {
+      e.preventDefault(); goTo(current + 1);
+    });
+
+    /* keyboard navigation */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  goTo(current - 1);
+      if (e.key === 'ArrowRight') goTo(current + 1);
+    });
+
+    /* auto-advance every 5 seconds */
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => goTo(current + 1), 5000);
+    }
+    resetTimer();
+
+    /* pause on hover */
+    track.parentElement.addEventListener('mouseenter', () => clearInterval(timer));
+    track.parentElement.addEventListener('mouseleave', resetTimer);
+  })();
+</script>
+
+
+</body>
+</html>
