@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nevlaalven</title>
+
+  <!-- ══════════════════════════════════════════════════
+       FAVICON
+       replace with your own file when ready:
+       <link rel="icon" type="image/png" href="images/icon.png" />
+       ══════════════════════════════════════════════════ -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c1440e'/><text x='16' y='22' font-family='monospace' font-size='14' font-weight='bold' fill='%23f5f2ec' text-anchor='middle'>n</text></svg>" />
+
+  <!-- ══════════════════════════════════════════════════
+       GOOGLE ANALYTICS 4
+       1. go to analytics.google.com → create account
+       2. new property → web → nevlaalven.com
+       3. copy your Measurement ID (looks like G-XXXXXXXXXX)
+       4. paste it in BOTH places marked ↓ below
+       ══════════════════════════════════════════════════ -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX'); /* ← paste your ID here too */
+  </script>
+
+  <!-- ══════════════════════════════════════════════════
+       FONT — DM Mono (rounded humanist mono)
+       ══════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+
+    /* ══════════════════════════════════════════════════
+       PALETTE — light theme
+       change these 6 values to retheme the whole site
+       ══════════════════════════════════════════════════ */
+    :root {
+      --bg:      #f5f2ec;   /* warm off-white page background  */
+      --surface: #edeae2;   /* cards, drawers, subtle panels   */
+      --line:    #dddad2;   /* very subtle dividers            */
+      --text:    #1a1814;   /* primary text                    */
+      --dim:     #8a8780;   /* secondary / muted text          */
+      --accent:  #c1440e;   /* rust — the one colour           */
+      --font:    'DM Mono', monospace;
+    }
+
+    /* ── reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; }
+    body  {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-weight: 300;
+      font-size: 13px;
+      line-height: 1.75;
+    }
+    a   { color: inherit; text-decoration: none; }
+    img { display: block; }
+
+
+    /* ══════════════════════════════════════════════════
+       NAV — fixed, light frosted
+       ══════════════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(245,242,236,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* logo */
+    .logo {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ════════════════════════════════════════════════
+       LOGO IMAGE — active once you add logo.png
+       max-height keeps it neat in the nav bar
+       ════════════════════════════════════════════════ */
+    .logo-img-link { display: flex; align-items: center; }
+    .logo-img      { max-height: 28px; width: auto; object-fit: contain; }
+
+    /* desktop links */
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── hamburger — shown only on mobile ── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    .nav-burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* mobile drawer */
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 52px; left: 0; right: 0;
+      background: rgba(245,242,236,0.97);
+      backdrop-filter: blur(16px);
+      z-index: 45;
+      padding: 20px 28px 28px;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      pointer-events: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-drawer.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .nav-drawer a {
+      font-size: 15px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .nav-drawer a:last-child { border-bottom: none; }
+    .nav-drawer a:hover      { color: var(--text); }
+    .nav-drawer a.hire       { color: var(--accent); margin-top: 6px; border-bottom: none; }
+
+
+    /* ══════════════════════════════════════════════════
+       HEADER IMAGE — full width, sits below fixed nav
+       ══════════════════════════════════════════════════ */
+    .site-header {
+      margin-top: 52px;   /* clears the fixed nav */
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      min-height: 400px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    /* ══════════════════════════════════════════════════
+       HEADER IMAGE
+       replace the placeholder div below with:
+       <img src="images/header.jpg"
+            alt="nevlaalven"
+            class="header-img" />
+       recommended: 1600 × 900 px or wider.
+       ══════════════════════════════════════════════════ -->
+    .header-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .header-ph {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: var(--dim);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+    .header-ph svg { opacity: 0.2; margin-bottom: 8px; }
+
+    /* title overlay — sits bottom-left over the image */
+    .header-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 80px 44px 32px;
+      background: linear-gradient(to top,
+        rgba(245,242,236,0.92) 0%,
+        rgba(245,242,236,0)    100%);
+    }
+
+    /* ══════════════════════════════════════════════════
+       MAIN TITLE — hand-drawn png slot
+       replace the <p> below with:
+       <img src="images/title-main.png"
+            alt="nevlaalven"
+            class="header-title-img" />
+       png, transparent bg, max-height 90px.
+       ══════════════════════════════════════════════════ -->
+    .header-title-img  { max-height: 90px; width: auto; object-fit: contain; }
+    .header-title-text {
+      font-size: 40px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .header-sub {
+      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      font-style: italic;
+    }
+
+    /* short description below the title */
+    .header-desc {
+      margin-top: 14px;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      color: var(--text);
+      max-width: 520px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+
+    /* ══════════════════════════════════════════════════
+       PAGE BODY
+       ══════════════════════════════════════════════════ */
+    .page {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 72px 40px 0;
+    }
+
+    /* ── section shared ── */
+    .section { margin-bottom: 80px; }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* ══════════════════════════════════════════════════
+       SECTION HEADING — hand-drawn png slot
+       for each section, replace
+       <span class="sh-text">heading</span>
+       with:
+       <img src="images/heading-NAME.png"
+            alt="heading"
+            class="sh-img" />
+       png, transparent bg, max-height 44px.
+       ══════════════════════════════════════════════════ -->
+    .section-head { display: flex; align-items: baseline; margin-bottom: 28px; }
+    .sh-img  { max-height: 44px; width: auto; object-fit: contain; }
+    .sh-text {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+
+
+    /* ══════════════════════════════════════════════════
+       SLIDESHOW
+       ══════════════════════════════════════════════════ */
+    .slideshow-wrap {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--surface);
+      user-select: none;
+    }
+
+    .slideshow-track {
+      display: flex;
+      transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide {
+      flex: 0 0 100%;
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .slide img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slide-ph {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--dim);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .slide-ph svg { opacity: 0.15; }
+
+    .slide-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 40px 22px 16px;
+      background: linear-gradient(to top,
+        rgba(245,242,236,0.85) 0%,
+        rgba(245,242,236,0)    100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .slide-name { font-size: 12px; letter-spacing: 1.5px; color: var(--text); }
+    .slide-link { font-size: 10px; letter-spacing: 2px; color: var(--accent); }
+
+    /* arrows */
+    .slide-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      background: rgba(245,242,236,0.7);
+      border: none;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .slide-btn:hover { background: rgba(193,68,14,0.15); }
+    .slide-btn.prev  { left: 14px; }
+    .slide-btn.next  { right: 14px; }
+
+    /* dots */
+    .slide-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .sdot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--line);
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .sdot.active { background: var(--accent); transform: scale(1.3); }
+
+
+    /* ══════════════════════════════════════════════════
+       IMAGE GRID — work + comics
+       ══════════════════════════════════════════════════ */
+    .grid { display: grid; gap: 3px; }
+    .g4   { grid-template-columns: repeat(4, 1fr); }
+    .g3   { grid-template-columns: repeat(3, 1fr); }
+
+    .img-card {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    .img-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    /* dark overlay on hover */
+    .img-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(26,24,20,0.35);
+      opacity: 0;
+      transition: opacity 0.25s;
+      z-index: 1;
+      border-radius: 6px;
+    }
+
+    /* accent top line */
+    .img-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s ease;
+      z-index: 2;
+    }
+
+    .img-card:hover::before { opacity: 1; }
+    .img-card:hover::after  { transform: scaleX(1); }
+    .img-card:hover img     { transform: scale(1.03); }
+
+    .img-label {
+      position: absolute;
+      bottom: 12px; left: 14px; right: 14px;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s, transform 0.25s;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #f5f2ec;
+    }
+
+    .img-label span { color: #f5a080; }
+    .img-card:hover .img-label { opacity: 1; transform: translateY(0); }
+
+    .card-ph {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--dim);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-align: center;
+      padding: 20px;
+    }
+    .card-ph svg { opacity: 0.15; }
+
+    .r-sq   { aspect-ratio: 1/1; }
+    .r-34   { aspect-ratio: 3/4; }
+    .r-wide { aspect-ratio: 16/9; }
+
+
+    /* ══════════════════════════════════════════════════
+       YOUTUBE / VIDEO GRID
+       ══════════════════════════════════════════════════ */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .video-wrap {
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .video-ratio {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+    }
+
+    .video-ratio iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    .video-caption {
+      padding: 11px 16px 13px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--dim);
+    }
+
+
+    /* ══════════════════════════════════════════════════
+       SHOP — replaces services section
+       3 cards linking out to your shop platforms
+       ══════════════════════════════════════════════════ */
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+    }
+
+    .shop-card {
+      display: block;
+      background: var(--surface);
+      border-radius: 8px;
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.2s;
+    }
+    .shop-card:hover { background: #e5e2d8; }
+
+    /* shop card image — same hover as img-card */
+    .shop-card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--line);
+      position: relative;
+    }
+
+    .shop-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s;
+    }
+    .shop-card:hover .shop-card-img img { transform: scale(1.04); }
+
+    .shop-card-img::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s;
+    }
+    .shop-card:hover .shop-card-img::after { transform: scaleX(1); }
+
+    .shop-card-body {
+      padding: 20px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .shop-card-name {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+    }
+
+    .shop-card-desc {
+      font-size: 12px;
+      color: var(--dim);
+      line-height: 1.8;
+      flex: 1;
+    }
+
+    .shop-card-cta {
+      margin-top: 10px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      width: fit-content;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .shop-card:hover .shop-card-cta { border-color: var(--accent); }
+
+
+    /* ══════════════════════════════════════════════════
+       CONTACT FOOTER — full-width light strip
+       ══════════════════════════════════════════════════ */
+    .contact-footer {
+      background: var(--surface);
+      margin-top: 100px;
+      padding: 64px 40px 40px;
+    }
+
+    .contact-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .contact-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 48px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* open indicator */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #2a8a50;
+      margin-bottom: 18px;
+    }
+
+    .blink {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #2a8a50;
+      animation: blink 2.5s infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.2; }
+    }
+
+    .contact-heading {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .contact-heading span { color: var(--accent); }
+
+    .contact-desc {
+      font-size: 12px;
+      color: var(--dim);
+      line-height: 1.9;
+      max-width: 340px;
+      margin-bottom: 22px;
+    }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 28px; }
+
+    .pill {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      padding: 3px 10px;
+      background: var(--bg);
+      border-radius: 40px;
+      color: var(--dim);
+    }
+
+    /* ── contact links list ── */
+    .contact-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-links li + li { border-top: 1px solid var(--line); }
+
+    .contact-links a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 0;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--dim);
+      transition: color 0.2s;
+    }
+    .contact-links a:hover { color: var(--text); }
+
+    .contact-links a em {
+      font-style: normal;
+      color: var(--accent);
+      font-size: 13px;
+      min-width: 20px;
+    }
+
+    /* ══════════════════════════════════════════════════
+       FORMSPREE CONTACT FORM
+       1. go to formspree.io → create free account
+       2. new form → copy your form endpoint URL
+          it looks like: https://formspree.io/f/XXXXXXX
+       3. paste it into the form action="" below
+       ══════════════════════════════════════════════════ -->
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .contact-form p {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 11px 14px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: var(--dim); }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: var(--accent); }
+
+    .contact-form textarea { min-height: 100px; }
+
+    .form-submit {
+      font-family: var(--font);
+      font-size: 11px;
+      letter-spacing: 2px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 5px;
+      padding: 11px 24px;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: opacity 0.2s;
+    }
+    .form-submit:hover { opacity: 0.85; }
+
+    /* success message shown after send */
+    .form-success {
+      display: none;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #2a8a50;
+      padding: 12px 0;
+    }
+
+    /* ── social links — horizontal row ── */
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--dim);
+      padding: 6px 12px;
+      background: var(--bg);
+      border-radius: 40px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .social-link:hover {
+      color: var(--text);
+      background: var(--line);
+    }
+
+    .social-link svg { flex-shrink: 0; }
+
+    /* footer bottom bar — centered */
+    .contact-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--accent);
+    }
+
+    .footer-copy {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--dim);
+    }
+
+    /* ── responsive ── */
+    @media (max-width: 820px) {
+      nav             { padding: 0 20px; }
+      .nav-links      { display: none; }
+      .nav-burger     { display: flex; }
+      .nav-drawer     { display: flex; }
+      .page           { padding: 52px 20px 0; }
+      .g4, .g3        { grid-template-columns: 1fr 1fr; }
+      .shop-grid      { grid-template-columns: 1fr; }
+      .video-grid     { grid-template-columns: 1fr; }
+      .contact-top    { grid-template-columns: 1fr; gap: 36px; }
+      .contact-footer { padding: 48px 20px 32px; }
+      .header-overlay { padding: 60px 20px 28px; }
+      .form-row       { grid-template-columns: 1fr; }
+    }
+
+  </style>
+</head>
+<body>
+
+
+<!-- ══════════════════════════════════════════════════════
+     NAV
+     ══════════════════════════════════════════════════════ -->
+<nav>
+
+  <!-- ════════════════════════════════════════════════
+       NAV LOGO — image slot
+       replace the <span> below with:
+       <a href="#" class="logo-img-link">
+         <img src="images/logo.png"
+              alt="nevlaalven"
+              class="logo-img" />
+       </a>
+       png, transparent bg, max-height 28px.
+       until then the text logo is shown.
+       ════════════════════════════════════════════════ -->
+  <a href="#" class="logo">nevlaalven</a>
+
+  <!-- desktop links — image / animation / shop / contact -->
+  <ul class="nav-links">
+    <li><a href="#image">image</a></li>
+    <li><a href="#animation">animation</a></li>
+    <li><a href="#shop">shop</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+
+  <!-- mobile hamburger -->
+  <button class="nav-burger" id="burger" aria-label="open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- mobile drawer -->
+<div class="nav-drawer" id="drawer">
+  <a href="#image"     class="drawer-link">image</a>
+  <a href="#animation" class="drawer-link">animation</a>
+  <a href="#shop"      class="drawer-link">shop</a>
+  <a href="#contact"   class="drawer-link">contact</a>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     HEADER IMAGE
+     ══════════════════════════════════════════════════════ -->
+<header class="site-header">
+
+  <!-- ════════════════════════════════════════════════
+       HEADER IMAGE
+       replace this placeholder with:
+       <img src="images/header.jpg"
+            alt="nevlaalven"
+            class="header-img" />
+       recommended: 1600 × 900 px or wider.
+       ════════════════════════════════════════════════ -->
+  <div class="header-ph">
+    <svg width="64" height="40" viewBox="0 0 64 40" fill="none">
+      <rect x="1" y="1" width="62" height="38" stroke="#8a8780" stroke-width="1"/>
+      <circle cx="16" cy="14" r="5" stroke="#8a8780" stroke-width="1"/>
+      <path d="M1 30 L14 16 L26 24 L40 10 L63 22" stroke="#8a8780" stroke-width="1" fill="none"/>
+    </svg>
+    header image — 1600 × 900 px
+  </div>
+
+  <div class="header-overlay">
+    <!-- ════════════════════════════════════════════════
+         MAIN TITLE — hand-drawn png slot
+         replace the <p class="header-title-text"> with:
+         <img src="images/title-main.png"
+              alt="nevlaalven"
+              class="header-title-img" />
+         png, transparent bg, max-height 90px.
+         ════════════════════════════════════════════════ -->
+    <p class="header-title-text">nevlaalven</p>
+
+    <!-- ════════════════════════════════════════════════
+         HEADER DESCRIPTION
+         edit this text — short intro, 1-2 lines max.
+         ════════════════════════════════════════════════ -->
+    <p class="header-desc">
+      illustration, animation and comics by giulio pascetta — pescara, it.
+    </p>
+  </div>
+
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE CONTENT
+     ══════════════════════════════════════════════════════ -->
+<div class="page">
+
+
+  <!-- ════════════════════════════════════════════════════
+       IMAGE — slideshow, each slide links to a social post
+       ════════════════════════════════════════════════════ -->
+  <div class="section" id="image">
+    <p class="section-label">01 — image</p>
+    <!-- ════════════
+         replace with:
+         <img src="images/heading-image.png" alt="image" class="sh-img" />
+         ════════════ -->
+    <div class="section-head"><span class="sh-text">image</span></div>
+
+    <div class="slideshow-wrap">
+      <div class="slideshow-track" id="track">
+
+
+        <!-- ─────────────────────────────────────────
+             SLIDE 1
+             edit: href → link to instagram / shop / vimeo
+             replace placeholder with your image
+             edit slide-name text
+             ───────────────────────────────────────── -->
+        <a class="slide"
+           href="https://www.instagram.com/nevlaalven/"
+           target="_blank" rel="noopener">
+          <!-- replace with: <img src="images/slide-01.jpg" alt="…" /> -->
+          <div class="slide-ph">
+            <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
+              <rect x="1" y="1" width="50" height="30" stroke="#8a8780" stroke-width="0.8"/>
+            </svg>
+            slide-01.jpg — 1200 × 675 px
+          </div>
+          <div class="slide-caption">
+            <span class="slide-name">image title 01</span>
+            <span class="slide-link">view on instagram →</span>
+          </div>
+        </a>
+
+
+        <!-- ─────────────────────────────────────────
+             SLIDE 2
+             ───────────────────────────────────────── -->
+        <a class="slide"
+           href="https://www.instagram.com/nevlaalven/"
+           target="_blank" rel="noopener">
+          <div class="slide-ph">
+            <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
+              <rect x="1" y="1" width="50" height="30" stroke="#8a8780" stroke-width="0.8"/>
+            </svg>
+            slide-02.jpg
+          </div>
+          <div class="slide-caption">
+            <span class="slide-name">image title 02</span>
+            <span class="slide-link">view on instagram →</span>
+          </div>
+        </a>
+
+
+        <!-- ─────────────────────────────────────────
+             SLIDE 3
+             ───────────────────────────────────────── -->
+        <a class="slide"
+           href="https://www.instagram.com/nevlaalven/"
+           target="_blank" rel="noopener">
+          <div class="slide-ph">
+            <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
+              <rect x="1" y="1" width="50" height="30" stroke="#8a8780" stroke-width="0.8"/>
+            </svg>
+            slide-03.jpg
+          </div>
+          <div class="slide-caption">
+            <span class="slide-name">image title 03</span>
+            <span class="slide-link">view on instagram →</span>
+          </div>
+        </a>
+
+
+        <!-- ─────────────────────────────────────────
+             SLIDE 4
+             ───────────────────────────────────────── -->
+        <a class="slide"
+           href="https://www.instagram.com/nevlaalven/"
+           target="_blank" rel="noopener">
+          <div class="slide-ph">
+            <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
+              <rect x="1" y="1" width="50" height="30" stroke="#8a8780" stroke-width="0.8"/>
+            </svg>
+            slide-04.jpg
+          </div>
+          <div class="slide-caption">
+            <span class="slide-name">image title 04</span>
+            <span class="slide-link">view on instagram →</span>
+          </div>
+        </a>
+
+
+        <!-- add more slides by duplicating a .slide block -->
+
+
+      </div><!-- /track -->
+
+      <button class="slide-btn prev" id="prev" aria-label="previous">‹</button>
+      <button class="slide-btn next" id="next" aria-label="next">›</button>
+    </div>
+
+    <div class="slide-dots" id="dots"></div>
+  </div><!-- /image -->
+
+
+  <!--
+  ════════════════════════════════════════════════════════
+  COMICS SECTION — hidden for now
+  to show it: remove the opening and closing comment tags
+  and add "comics" to the nav links + mobile drawer above.
+  ════════════════════════════════════════════════════════
+
+  <div class="section" id="comics">
+    <p class="section-label">— comics</p>
+    <div class="section-head"><span class="sh-text">comics</span></div>
+    <div class="grid g3">
+
+      <a class="img-card r-34" href="https://YOUR-COMIC-LINK" target="_blank" rel="noopener">
+        comic-01.jpg
+        <div class="img-label">episode 01 <span>read →</span></div>
+      </a>
+
+      <a class="img-card r-34" href="https://YOUR-COMIC-LINK" target="_blank" rel="noopener">
+        comic-02.jpg
+        <div class="img-label">episode 02 <span>read →</span></div>
+      </a>
+
+      <a class="img-card r-34" href="https://YOUR-COMIC-LINK" target="_blank" rel="noopener">
+        comic-03.jpg
+        <div class="img-label">episode 03 <span>read →</span></div>
+      </a>
+
+    </div>
+  </div>
+
+  END COMICS SECTION
+  -->
+
+
+  <!-- ════════════════════════════════════════════════════
+       ANIMATION — 3 youtube embeds
+       how to get embed url:
+       1. open your youtube video
+       2. share → embed
+       3. copy the src value:
+          https://www.youtube.com/embed/VIDEO_ID
+       4. paste it into src below
+       ════════════════════════════════════════════════════ -->
+  <div class="section" id="animation">
+    <p class="section-label">02 — animation</p>
+    <!-- ════════════
+         replace with:
+         <img src="images/heading-animation.png" alt="animation" class="sh-img" />
+         ════════════ -->
+    <div class="section-head"><span class="sh-text">animation</span></div>
+
+    <div class="video-grid">
+
+
+      <!-- VIDEO 1 — edit src and caption -->
+      <div class="video-wrap">
+        <div class="video-ratio">
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_1"
+            title="animation 01"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="video-caption">animation title 01</p>
+      </div>
+
+
+      <!-- VIDEO 2 — edit src and caption -->
+      <div class="video-wrap">
+        <div class="video-ratio">
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_2"
+            title="animation 02"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="video-caption">animation title 02</p>
+      </div>
+
+
+      <!-- VIDEO 3 — edit src and caption -->
+      <div class="video-wrap">
+        <div class="video-ratio">
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_3"
+            title="animation 03"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="video-caption">animation title 03</p>
+      </div>
+
+
+    </div>
+  </div><!-- /animation -->
+
+
+  <!--
+  ════════════════════════════════════════════════════════
+  SHOP SECTION — hidden for now
+  to show it: remove the opening and closing comment tags
+  and add "shop" back to the nav links + mobile drawer.
+  ════════════════════════════════════════════════════════
+
+  <div class="section" id="shop">
+    <p class="section-label">— shop</p>
+    <div class="section-head"><span class="sh-text">shop</span></div>
+    <div class="shop-grid">
+
+      <a class="shop-card" href="https://YOUR-PRINT-SHOP-LINK" target="_blank" rel="noopener">
+        <div class="shop-card-img">
+          shop-prints.jpg
+        </div>
+        <div class="shop-card-body">
+          <p class="shop-card-name">printed illustrations</p>
+          <p class="shop-card-desc">art prints and posters — original artwork, ready to hang.</p>
+          <span class="shop-card-cta">browse prints →</span>
+        </div>
+      </a>
+
+      <a class="shop-card" href="https://YOUR-TSHIRT-SHOP-LINK" target="_blank" rel="noopener">
+        <div class="shop-card-img">
+          shop-tshirts.jpg
+        </div>
+        <div class="shop-card-body">
+          <p class="shop-card-name">t-shirts &amp; apparel</p>
+          <p class="shop-card-desc">wearable art — original designs on quality tees and hoodies.</p>
+          <span class="shop-card-cta">browse apparel →</span>
+        </div>
+      </a>
+
+      <a class="shop-card" href="https://YOUR-MERCH-SHOP-LINK" target="_blank" rel="noopener">
+        <div class="shop-card-img">
+          shop-merch.jpg
+        </div>
+        <div class="shop-card-body">
+          <p class="shop-card-name">merchandise</p>
+          <p class="shop-card-desc">stickers, totes, mugs, pins — little pieces of the nevlaalven universe.</p>
+          <span class="shop-card-cta">browse merch →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  END SHOP SECTION
+  -->
+
+
+</div><!-- /page -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     CONTACT FOOTER
+     ══════════════════════════════════════════════════════ -->
+<footer class="contact-footer" id="contact">
+  <div class="contact-inner">
+
+    <div class="contact-top">
+
+      <!-- left: collab info -->
+      <div>
+        <div class="status">
+          <span class="blink"></span>
+          open for collaborations
+        </div>
+
+        <p class="contact-heading">
+          let's build<br>something <span>together</span>
+        </p>
+
+        <!-- edit this description -->
+        <p class="contact-desc">
+          looking to team up with game devs, musicians,
+          zine makers, animators, and anyone building
+          something original. big or small — say hi.
+        </p>
+
+        <!-- edit or add tags -->
+        <div class="pill-row">
+          <span class="pill">indie games</span>
+          <span class="pill">music artists</span>
+          <span class="pill">zines</span>
+          <span class="pill">short films</span>
+          <span class="pill">animation</span>
+          <span class="pill">editorial</span>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             SOCIAL LINKS — horizontal row
+             active links shown, others hidden in comments.
+             to activate any hidden link: cut it out of the
+             comment block and paste it as a live <a> tag.
+             ════════════════════════════════════════════ -->
+        <div class="social-row">
+
+          <!-- INSTAGRAM — active -->
+          <a class="social-link"
+             href="https://www.instagram.com/nevlaalven/"
+             target="_blank" rel="noopener"
+             aria-label="instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+            </svg>
+            instagram
+          </a>
+
+          <!-- YOUTUBE — active -->
+          <a class="social-link"
+             href="https://www.youtube.com/@nevlaalven"
+             target="_blank" rel="noopener"
+             aria-label="youtube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 8s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C15.6 3.8 12 3.8 12 3.8s-3.6 0-5.8.1c-.6.1-1.9.1-3 1.3C2.3 6 2 8 2 8S1.7 10.3 1.7 12.5v2.1C1.7 16.8 2 19 2 19s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.2 1.2C8.3 23.1 12 23.2 12 23.2s3.6 0 5.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.2.3-4.4v-2.1C22.3 10.3 22 8 22 8z"/>
+              <polygon points="9.5,15.5 15.5,12 9.5,8.5" fill="currentColor" stroke="none"/>
+            </svg>
+            youtube
+          </a>
+
+          <!-- VIMEO — active -->
+          <a class="social-link"
+             href="https://vimeo.com/nevlaalven"
+             target="_blank" rel="noopener"
+             aria-label="vimeo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 7c-.1 2.8-2 6.6-5.8 11.4C12.3 23.5 9.1 26 6.5 26c-1.6 0-2.9-1.5-4-4.4L1.1 15C.4 12.1 -.4 10.6.5 10.6c.7 0 1.7.9 3.1 2.8l1.2-2C6.1 9.4 7.6 8 9 8c1.1 0 2.1.8 2.9 2.5.7-1.1 1.5-2 2.2-2.7.8-.7 1.5-1 2.2-1 2.5 0 5.2 4.3 5.7 0.2z"/>
+            </svg>
+            vimeo
+          </a>
+
+        </div>
+
+        <!--
+        ══════════════════════════════════════════════
+        HIDDEN SOCIAL LINKS
+        to activate any of these: cut the <a> block
+        out of this comment and paste it inside the
+        <div class="social-row"> above.
+        ══════════════════════════════════════════════
+
+        TIKTOK:
+        <a class="social-link"
+           href="https://www.tiktok.com/@nevlaalven"
+           target="_blank" rel="noopener"
+           aria-label="tiktok">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.13a8.16 8.16 0 004.77 1.52V7.2a4.85 4.85 0 01-1-.51z"/>
+          </svg>
+          tiktok
+        </a>
+
+        DISCORD:
+        <a class="social-link"
+           href="https://discord.gg/YOUR-INVITE"
+           target="_blank" rel="noopener"
+           aria-label="discord">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+          </svg>
+          discord
+        </a>
+
+        TUMBLR:
+        <a class="social-link"
+           href="https://nevlaalven.tumblr.com"
+           target="_blank" rel="noopener"
+           aria-label="tumblr">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.999 0h3.517v6.114h4.801v3.633h-4.82v7.47c.016 1.001.375 2.371 2.228 2.371h.07c.272-.007.858-.05 1.501-.336l1.032 3.336c-.449.439-1.56 1.348-3.765 1.412z"/>
+          </svg>
+          tumblr
+        </a>
+
+        FACEBOOK:
+        <a class="social-link"
+           href="https://www.facebook.com/nevlaalven"
+           target="_blank" rel="noopener"
+           aria-label="facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          facebook
+        </a>
+
+        END HIDDEN SOCIAL LINKS
+        -->
+
+      </div>
+
+      <!-- right: contact form (Formspree) -->
+      <div>
+        <p style="font-size:10px;letter-spacing:3px;color:var(--accent);margin-bottom:4px;">say hello</p>
+
+        <!-- ══════════════════════════════════════════
+             FORMSPREE CONTACT FORM
+             1. go to formspree.io → sign up free
+             2. create a new form
+             3. copy your endpoint URL
+             4. paste it into action="" below
+                example: https://formspree.io/f/xyzabcde
+             ══════════════════════════════════════════ -->
+        <form
+          class="contact-form"
+          action="https://formspree.io/f/YOUR-FORM-ID"
+          method="POST"
+          id="contact-form">
+
+          <div class="form-row">
+            <input type="text"  name="name"  placeholder="your name"  required />
+            <input type="email" name="email" placeholder="your email" required />
+          </div>
+
+          <input type="text" name="subject" placeholder="subject" />
+
+          <textarea name="message" placeholder="tell me about your project…" required></textarea>
+
+          <!-- spam protection -->
+          <input type="text" name="_gotcha" style="display:none" />
+
+          <button type="submit" class="form-submit">send message</button>
+        </form>
+
+        <p class="form-success" id="form-success">
+          ✓ message sent — i'll get back to you soon.
+        </p>
+
+      </div>
+
+    </div><!-- /contact-top -->
+
+    <!-- bottom bar — centered -->
+    <div class="contact-bottom">
+      <span class="footer-logo">nevlaalven</span>
+      <p class="footer-copy">© 2026 giulio pascetta · pescara, it</p>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════════════════════ -->
+<script>
+
+  /* ── mobile nav burger ── */
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+
+  burger.addEventListener('click', () => {
+    const isOpen = drawer.classList.toggle('open');
+    burger.classList.toggle('open', isOpen);
+  });
+
+  /* close drawer on any link tap */
+  drawer.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      drawer.classList.remove('open');
+      burger.classList.remove('open');
+    });
+  });
+
+  /* ── footer scroll helper ── */
+  function scrollToSection(selector) {
+    const el = document.querySelector(selector);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ── Formspree AJAX submit (no page reload) ── */
+  const form    = document.getElementById('contact-form');
+  const success = document.getElementById('form-success');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          success.style.display = 'block';
+        } else {
+          alert('something went wrong — please email me directly.');
+        }
+      } catch {
+        alert('something went wrong — please email me directly.');
+      }
+    });
+  }
+
+  /* ── slideshow ── */
+  (function () {
+    const track  = document.getElementById('track');
+    const dotsEl = document.getElementById('dots');
+    const slides = track.querySelectorAll('.slide');
+    const total  = slides.length;
+    let current  = 0;
+    let timer;
+
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'sdot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'slide ' + (i + 1));
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+    });
+
+    function goTo(n) {
+      current = (n + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dotsEl.querySelectorAll('.sdot').forEach((d, i) =>
+        d.classList.toggle('active', i === current));
+      resetTimer();
+    }
+
+    document.getElementById('prev').addEventListener('click', e => { e.preventDefault(); goTo(current - 1); });
+    document.getElementById('next').addEventListener('click', e => { e.preventDefault(); goTo(current + 1); });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  goTo(current - 1);
+      if (e.key === 'ArrowRight') goTo(current + 1);
+    });
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => goTo(current + 1), 5000);
+    }
+    resetTimer();
+
+    track.parentElement.addEventListener('mouseenter', () => clearInterval(timer));
+    track.parentElement.addEventListener('mouseleave', resetTimer);
+  })();
+
+</script>
+
+</body>
+</html>
