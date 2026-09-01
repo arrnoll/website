@@ -168,7 +168,7 @@
     .site-header {
       margin-top: 48px;
       width: 100%;
-      aspect-ratio: 16 / 9 ;
+      height: 70vh;
       min-height: 420px;
       max-height: 640px;
       overflow: hidden;
@@ -188,6 +188,7 @@
        then set the href on .header-img-link to
        wherever you want it to link.
        ══════════════════════════════════════════════════ -->
+    */
     .header-img-link {
       display: block;
       width: 100%;
@@ -199,9 +200,10 @@
     .header-img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
       filter: grayscale(100%) contrast(1.1);
+      background: #050505;
     }
 
     .header-ph {
