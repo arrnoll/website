@@ -168,8 +168,9 @@
     .site-header {
       margin-top: 48px;
       width: 100%;
-      height: 70vh;
-      min-height: 400px;
+      aspect-ratio: 16 / 9;
+      min-height: 420px;
+      max-height: 1600px;
       overflow: hidden;
       background: #050505;
       position: relative;
@@ -198,9 +199,10 @@
     .header-img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
-      filter: grayscale(100%) contrast(1.1);
+      filter: contrast(1.1);
+      background: #050505;
     }
 
     .header-ph {
@@ -944,6 +946,7 @@
       .header-overlay    { padding: 80px 20px 28px; }
       .form-row          { grid-template-columns: 1fr; }
       .header-title-text { font-size: 30px; }
+      .site-header       { min-height: 300px; }
       .video-caption     { padding: 10px 20px 12px; }
       #design .section-head,
       #comic .section-head,
@@ -999,19 +1002,10 @@
             alt="…" class="header-img" />
        ════════════════════════════════════════════════ -->
   <a class="header-img-link"
-     href="https://YOUR-HEADER-LINK"
+     href="images/header.png"
      target="_blank" rel="noopener"
      data-balloon="see latest work →">
-
-    <div class="header-ph">
-      <svg width="72" height="44" viewBox="0 0 72 44" fill="none">
-        <rect x="1" y="1" width="70" height="42" stroke="#2a2a2a" stroke-width="1"/>
-        <circle cx="18" cy="16" r="6" stroke="#2a2a2a" stroke-width="1"/>
-        <path d="M1 34 L16 18 L30 27 L46 12 L71 24" stroke="#2a2a2a" stroke-width="1" fill="none"/>
-      </svg>
-      header image — 1600 × 900 px
-    </div>
-
+    <img src="images/header.png" alt="nevlaalven" class="header-img" />
   </a>
 
   <!-- title + description overlay — title is plain text, not a link.
@@ -1067,15 +1061,10 @@
          edit slide-name → label at bottom of slide
          ───────────────────────────────────────────── -->
     <a class="slide"
-       href="https://YOUR-SLIDE-01-LINK"
+       href="images/slide-01.jpg"
        target="_blank" rel="noopener"
        data-balloon="design title 01">
-      <div class="slide-ph">
-        <svg width="48" height="30" viewBox="0 0 48 30" fill="none">
-          <rect x="1" y="1" width="46" height="28" stroke="#2a2a2a" stroke-width="0.8"/>
-        </svg>
-        slide-01.jpg — 1200 × 675 px
-      </div>
+      <img src="images/slide-01.jpg" alt="design 01" />
       <div class="slide-caption">
         <span class="slide-name">design 01</span>
         <span class="slide-link">view →</span>
@@ -1087,15 +1076,10 @@
          SLIDE 2 — edit href, data-balloon, image, name
          ───────────────────────────────────────────── -->
     <a class="slide"
-       href="https://YOUR-SLIDE-02-LINK"
+       href="images/slide-02.jpg"
        target="_blank" rel="noopener"
        data-balloon="design title 02">
-      <div class="slide-ph">
-        <svg width="48" height="30" viewBox="0 0 48 30" fill="none">
-          <rect x="1" y="1" width="46" height="28" stroke="#2a2a2a" stroke-width="0.8"/>
-        </svg>
-        slide-02.jpg
-      </div>
+      <img src="images/slide-02.jpg" alt="design 02" />
       <div class="slide-caption">
         <span class="slide-name">design 02</span>
         <span class="slide-link">view →</span>
@@ -1107,15 +1091,10 @@
          SLIDE 3
          ───────────────────────────────────────────── -->
     <a class="slide"
-       href="https://YOUR-SLIDE-03-LINK"
+       href="images/slide-03.jpg"
        target="_blank" rel="noopener"
        data-balloon="design title 03">
-      <div class="slide-ph">
-        <svg width="48" height="30" viewBox="0 0 48 30" fill="none">
-          <rect x="1" y="1" width="46" height="28" stroke="#2a2a2a" stroke-width="0.8"/>
-        </svg>
-        slide-03.jpg
-      </div>
+      <img src="images/slide-03.jpg" alt="design 03" />
       <div class="slide-caption">
         <span class="slide-name">design 03</span>
         <span class="slide-link">view →</span>
@@ -1127,15 +1106,10 @@
          SLIDE 4
          ───────────────────────────────────────────── -->
     <a class="slide"
-       href="https://YOUR-SLIDE-04-LINK"
+       href="images/slide-04.jpg"
        target="_blank" rel="noopener"
        data-balloon="design title 04">
-      <div class="slide-ph">
-        <svg width="48" height="30" viewBox="0 0 48 30" fill="none">
-          <rect x="1" y="1" width="46" height="28" stroke="#2a2a2a" stroke-width="0.8"/>
-        </svg>
-        slide-04.jpg
-      </div>
+      <img src="images/slide-04.jpg" alt="design 04" />
       <div class="slide-caption">
         <span class="slide-name">design 04</span>
         <span class="slide-link">view →</span>
@@ -1223,7 +1197,7 @@
            ───────────────────────────────────────────── -->
       <div class="video-slide">
         <div class="video-ratio">
-          <iframe src="https://www.youtube.com/embed/VIDEO_ID_1"
+          <iframe src="https://www.youtube.com/embed/JfR5RQyBudI"
             title="animation 01"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>
@@ -1237,7 +1211,7 @@
            ───────────────────────────────────────────── -->
       <div class="video-slide">
         <div class="video-ratio">
-          <iframe src="https://www.youtube.com/embed/VIDEO_ID_2"
+          <iframe src="https://www.youtube.com/embed/svKw6mPLQjY"
             title="animation 02"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>
@@ -1251,7 +1225,7 @@
            ───────────────────────────────────────────── -->
       <div class="video-slide">
         <div class="video-ratio">
-          <iframe src="https://www.youtube.com/embed/VIDEO_ID_3"
+          <iframe src="https://www.youtube.com/embed/nbXt4fHhDA4"
             title="animation 03"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>
