@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>comic — nevlaalven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:   #0a0a0a;
+      --text: #e0e0e0;
+      --dim:  #4a4a4a;
+      --hi:   #ffffff;
+      --line: #1e1e1e;
+      --f:    'Inconsolata', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--f);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* top bar */
+    .bar {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      height: 48px;
+      background: rgba(10,10,10,0.92);
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+    .bar a       { color: var(--dim); transition: color 0.15s; }
+    .bar a:hover { color: var(--hi); }
+    .bar .home   { color: var(--text); }
+
+    /* pages */
+    .reader {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 0 64px;
+    }
+    .reader img {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-bottom: 4px;
+    }
+
+    .msg {
+      text-align: center;
+      color: var(--dim);
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 80px 20px;
+    }
+
+    .end {
+      text-align: center;
+      padding: 32px 20px 72px;
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+    .end a       { color: var(--dim); transition: color 0.15s; }
+    .end a:hover { color: var(--hi); }
+  </style>
+</head>
+<body>
+
+  <div class="bar">
+    <a href="index.html#comic">← back</a>
+    <a href="index.html" class="home">nevlaalven</a>
+  </div>
+
+  <!-- pages load automatically from images/comic/
+       name them page-01.jpg, page-02.jpg, page-03.jpg ...
+       no need to edit this file when you add pages -->
+  <div class="reader" id="reader"></div>
+  <p class="msg" id="msg">loading…</p>
+
+  <div class="end" id="end" style="display:none;">
+    <a href="index.html#comic">← back to comic</a>
+  </div>
+
+  <script>
+    (function () {
+      const reader = document.getElementById('reader');
+      const msg    = document.getElementById('msg');
+      const end    = document.getElementById('end');
+      let n = 1;
+
+      function loadNext() {
+        const img = new Image();
+        img.decoding = 'async';
+        img.alt = 'page ' + n;
+        img.src = 'images/comic/page-' + String(n).padStart(2, '0') + '.jpg';
+
+        img.onload = function () {
+          reader.appendChild(img);
+          msg.style.display = 'none';
+          n++;
+          loadNext();
+        };
+        img.onerror = function () {
+          if (n === 1) {
+            msg.textContent = 'no pages yet — add images/comic/page-01.jpg';
+          } else {
+            end.style.display = 'block';
+          }
+        };
+      }
+      loadNext();
+    })();
+  </script>
+</body>
+</html>
