@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>privacy — nevlaalven</title>
+  <style>
+    @font-face {
+      font-family: 'Inconsolata';
+      font-style: normal;
+      font-weight: 200 900;
+      font-display: swap;
+      src: url('fonts/inconsolata-latin.woff2') format('woff2');
+      unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+    :root {
+      --bg:   #0a0a0a;
+      --text: #e0e0e0;
+      --dim:  #7a7a7a;
+      --hi:   #ffffff;
+      --line: #1e1e1e;
+      --f:    'Inconsolata', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--f);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.8;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .bar {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      height: 48px;
+      background: rgba(10,10,10,0.92);
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+    .bar a       { color: var(--dim); transition: color 0.15s; }
+    .bar a:hover { color: var(--hi); }
+    .bar .home   { color: var(--text); }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+    h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+    .updated { font-size: 11px; letter-spacing: 2px; color: var(--dim); margin-bottom: 40px; }
+    h2 {
+      font-size: 12px; font-weight: 700; letter-spacing: 3px;
+      margin: 40px 0 10px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+    p, li { font-size: 14px; color: var(--text); font-weight: 300; }
+    p + p { margin-top: 12px; }
+    ul { margin: 10px 0 0 18px; }
+    li + li { margin-top: 8px; }
+    main a { border-bottom: 1px solid var(--dim); transition: color 0.15s, border-color 0.15s; }
+    main a:hover { color: var(--hi); border-color: var(--hi); }
+  </style>
+</head>
+<body>
+
+  <div class="bar">
+    <a href="index.html">← back</a>
+    <a href="index.html" class="home">nevlaalven</a>
+  </div>
+
+  <main>
+    <h1>privacy</h1>
+    <p class="updated">last updated: 19 november 2026</p>
+
+    <p>this is the website of giulio pascetta (nevlaalven), pescara, italy. it has no accounts, no comments, no ads and no forms. this page explains what happens to your data when you visit.</p>
+
+    <h2>who is responsible</h2>
+    <p>giulio pascetta, pescara, italy. for anything about your data, write to
+      <a href="mailto:giuliopascetta@gmail.com">giuliopascetta[at]gmail.com</a>.</p>
+
+    <h2>hosting</h2>
+    <p>the site is hosted on github pages. like any web host, github processes technical data when a page is loaded, such as your ip address, browser and the time of the visit. i don't have access to these logs. see
+      <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">github's privacy statement</a>.</p>
+
+    <h2>visit statistics</h2>
+    <p>to see roughly how many people visit and which pages they open, the site uses cloudflare web analytics. it is set up without cookies and doesn't store anything on your device. i only see summary numbers (pages viewed, countries, browsers), not individual visitors. more at
+      <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener">cloudflare's page</a>.</p>
+
+    <h2>fonts</h2>
+    <p>the font is stored on this website. nothing is requested from google fonts or other font services.</p>
+
+    <h2>youtube videos</h2>
+    <p>the videos in the animation section are embedded from youtube in its privacy-enhanced mode (youtube-nocookie.com). youtube doesn't store information about visitors until you press play. once you do, youtube (google) may set cookies and collect data according to
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">its own privacy policy</a>.</p>
+
+    <h2>if you email me</h2>
+    <p>i receive your email address and your message, and i use them only to reply to you. i don't share them with anyone, and i keep the conversation only as long as it is needed to follow up on it.</p>
+
+    <h2>cookies</h2>
+    <p>this website doesn't set any cookies and doesn't store anything in your browser. the only exception is youtube, only after you press play on a video, as described above.</p>
+
+    <h2>links to other sites</h2>
+    <p>the site links to instagram, youtube, artstation and other platforms. they have their own privacy policies, and what happens there is outside my control.</p>
+
+    <h2>your rights</h2>
+    <p>under the gdpr you can ask me for access to your data, correction, deletion, or to limit or object to its use. write to the email above. you can also complain to the italian data protection authority,
+      <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">garante per la protezione dei dati personali</a>.</p>
+  </main>
+
+</body>
+</html>
